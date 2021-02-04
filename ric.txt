@@ -1,0 +1,47 @@
+package glavni;
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Ellipse;
+import javafx.stage.Stage;
+public class Program extends Application {
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        Group root = new Group();
+        Scene scene = new Scene(root, 200, 250, Color.WHITE);
+
+        DropShadow ds = new DropShadow();
+        ds.setOffsetX(4.0);
+        ds.setOffsetY(4.0);
+        ds.setColor(Color.color(0.0, 0.4,0.4));
+
+        Circle c = new Circle();
+        c.setEffect(ds);
+        c.setCenterX(50.0);
+        c.setCenterY(125.0);
+        c.setRadius(30.0);
+        c.setFill(Color.RED);
+        c.setCache(true);
+
+        Ellipse e = new Ellipse();
+        e.setCenterX(50.0f);
+        e.setCenterY(50.0f);
+        e.setRadiusX(50.0f);
+        e.setRadiusY(25.0f);
+        e.setFill(Color.YELLOW);
+        e.setStroke(Color.BLACK);
+        e.setStrokeWidth(5);
+        e.setEffect(ds);
+
+        root.getChildren().addAll(c, e);
+        stage.setScene(scene);
+        stage.show();
+    }
+}

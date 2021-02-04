@@ -1,0 +1,213 @@
+package glavni;
+import javafx.application.Application;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+public class Program extends Application {
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    Stage stage;
+    TextField nameField;
+    TextField phoneField;
+    TextField addressField;
+    RadioButton smallRb;
+    RadioButton mediumRb;
+    RadioButton largeRb;
+    RadioButton thinRb;
+    RadioButton thickRb;
+    CheckBox pepperoniCheck;
+    CheckBox sausageCheck;
+    CheckBox linguicaCheck;
+    CheckBox olivesCheck;
+    CheckBox mushroomsCheck;
+    CheckBox tomatoesCheck;
+    CheckBox anchoviesCheck;
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        stage = primaryStage;
+    //Heading
+        Text textHeading = new Text("ORDER YOUR PIZZA NOW");
+        textHeading.setFont(new Font(20));
+        HBox paneTop = new HBox(textHeading);
+        paneTop.setPadding(new Insets(20,10,20,10));
+
+    //Creating a label + input field pane
+        //name label creation
+            Label nameLabel = new Label("Name: ");
+            nameLabel.setPrefWidth(100);
+        //name input field creation
+            nameField = new TextField();
+            nameField.setPrefColumnCount(20);
+            nameField.setPromptText("Enter the customer's name here");
+            nameField.setMaxWidth(Double.MAX_VALUE);
+            HBox namePane = new HBox(nameLabel, nameField);
+
+        //phone label creation
+            Label phoneLabel = new Label("Phone number: ");
+            phoneLabel.setPrefWidth(100);
+        //phone input field creation
+            phoneField = new TextField();
+            phoneField.setPrefColumnCount(20);
+            phoneField.setPromptText("Enter the customer's phone number here");
+            phoneField.setMaxWidth(Double.MAX_VALUE);
+            HBox phonePane = new HBox(phoneLabel, phoneField);
+
+        //address label creation
+            Label addressLabel = new Label("Address: ");
+            addressLabel.setPrefWidth(100);
+        //address input field creation
+            addressField = new TextField();
+            addressField.setPrefColumnCount(20);
+            addressField.setPromptText("Enter the customer's address here");
+            addressField.setMaxWidth(Double.MAX_VALUE);
+            HBox addressPane = new HBox(addressLabel, addressField);
+
+        VBox paneCustomer = new VBox(10, namePane, phonePane, addressPane);
+
+    //Creating the pizza options pane
+        //Creating the size pane
+            Label sizeLabel = new Label("Size");
+            smallRb = new RadioButton("Small");
+            mediumRb = new RadioButton("Medium");
+            largeRb = new RadioButton("Large");
+            smallRb.setSelected(true);
+            ToggleGroup sizeGroup = new ToggleGroup();
+            smallRb.setToggleGroup(sizeGroup);
+            mediumRb.setToggleGroup(sizeGroup);
+            largeRb.setToggleGroup(sizeGroup);
+            VBox sizePane = new VBox(sizeLabel, smallRb, mediumRb, largeRb);
+
+        //Creating the crust pane
+            Label crustLabel = new Label("Crust");
+            thinRb = new RadioButton("Thin");
+            thickRb = new RadioButton("Thick");
+            thinRb.setSelected(true);
+            ToggleGroup crustGroup = new ToggleGroup();
+            thinRb.setToggleGroup(crustGroup);
+            thickRb.setToggleGroup(crustGroup);
+            VBox crustPane = new VBox(crustLabel, thinRb, thickRb);
+
+        //Creating the toppings pane
+            Label toppingsLabel = new Label("Toppings");
+            pepperoniCheck = new CheckBox("Pepperoni");
+            sausageCheck = new CheckBox("Sausage");
+            linguicaCheck = new CheckBox("Linguica");
+            olivesCheck = new CheckBox("Olives");
+            mushroomsCheck = new CheckBox("Mushrooms");
+            tomatoesCheck = new CheckBox("Tomatoes");
+            anchoviesCheck = new CheckBox("Anchovies");
+
+            FlowPane paneToppings = new FlowPane(Orientation.VERTICAL,
+                    toppingsLabel,
+                    pepperoniCheck,
+                    sausageCheck,
+                    linguicaCheck,
+                    olivesCheck,
+                    mushroomsCheck,
+                    tomatoesCheck,
+                    anchoviesCheck);
+            paneToppings.setPrefWrapLength(100);
+            paneToppings.setPadding(new Insets(10, 0, 10, 0));
+            paneToppings.setHgap(20);
+            paneToppings.setVgap(10);
+            paneToppings.setPrefWrapLength(100);
+            VBox paneTopping = new VBox(toppingsLabel, paneToppings);
+
+            HBox paneOrder = new HBox(50, sizePane, crustPane, paneTopping);
+
+            VBox paneCenter = new VBox(20, paneCustomer, paneOrder);
+            paneCenter.setPadding(new Insets(0, 10, 0, 10));
+
+    //Creating the bottom pane with two buttons
+            Button btnOK = new Button("OK");
+            btnOK.setPrefWidth(80);
+            btnOK.setOnAction(e -> btnOK_Click());
+            Button btnCancel = new Button("Cancel");
+            btnCancel.setPrefWidth(80);
+            btnCancel.setOnAction(e -> btnCancel_Click());
+            Region spacer = new Region();
+            HBox paneBottom = new HBox(10, spacer, btnOK, btnCancel);
+
+    //Creating the main pane and adding other panes
+            BorderPane mainPane = new BorderPane();
+            mainPane.setTop(paneTop);
+            mainPane.setCenter(paneCenter);
+            mainPane.setBottom(paneBottom);
+            Scene scene = new Scene(mainPane);
+            stage.setScene(scene);
+            stage.setTitle("Pizza Order");
+            stage.show();
+    }
+
+    private void btnOK_Click(){
+        String msg = "Customer:\n\n";
+        msg += "\t" + nameField.getText() + "\n";
+        msg += "\t" + addressField.getText() + "\n";
+        msg += "\t" + phoneField.getText() + "\n\n";
+        msg += "You have ordered a ";
+
+        if (smallRb.isSelected()) msg += "small "; //getText() dace Small
+        if (mediumRb.isSelected())msg += "medium ";
+        if (largeRb.isSelected()) msg += "large ";
+
+        if (thinRb.isSelected()) msg += "thin crust pizza with "; //kora
+        if (thickRb.isSelected())msg += "thick crust pizza with "; //kora
+        String toppings = ""; //prelivi
+        toppings = buildToppings(pepperoniCheck, toppings);
+        toppings = buildToppings(sausageCheck, toppings);
+        toppings = buildToppings(linguicaCheck, toppings);
+        toppings = buildToppings(olivesCheck, toppings);
+        toppings = buildToppings(tomatoesCheck, toppings);
+        toppings = buildToppings(mushroomsCheck, toppings);
+        toppings = buildToppings(anchoviesCheck, toppings);
+        if (toppings.equals("")) msg += "no toppings.";
+        else msg += "the following toppings:\n" + toppings;
+        MessageBox.show(msg, "Order Details"); //od ranije
+    }
+
+    public String buildToppings(CheckBox chk, String msg) {
+        if (chk.isSelected()) { if (!msg.equals("")) msg += ", ";
+            msg += chk.getText();
+        }
+        return msg;
+    }
+
+    private void btnCancel_Click(){
+        stage.close();
+    }
+
+}
+
+class MessageBox {
+    public static void show(String message, String title) {
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle(title);
+        stage.setMinWidth(250);
+        Label lbl = new Label();
+        lbl.setText(message);
+        Button btnOK = new Button();
+        btnOK.setText("OK");
+        btnOK.setOnAction(e -> stage.close());
+        VBox pane = new VBox(20);
+        pane.getChildren().addAll(lbl, btnOK);
+        pane.setAlignment(Pos.CENTER);
+        Scene scene = new Scene(pane);
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+}
